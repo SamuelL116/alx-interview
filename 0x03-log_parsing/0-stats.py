@@ -30,6 +30,7 @@ try:
 except Exception as err:
     pass
 
+
 finally:
     print('File size: {}'.format(total_size))
     for key, value in sorted(cache.items()):
