@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Rotate a 2D matrix by 90 degrees (clockwise).
+Rotate a 2D matrix by 90 degrees. (clockwise).
 """
 
 
