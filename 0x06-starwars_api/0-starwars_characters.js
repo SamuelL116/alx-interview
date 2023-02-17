@@ -1,26 +1,26 @@
 #!/usr/bin/node
+/**
+  prints all characters of a Star Wars movie
+  */
 
+const myArgs = process.argv.slice(2);
 const request = require('request');
+const url = 'https://swapi-api.hbtn.io/api/films/' + myArgs[0];
 
-const movieId = process.argv[2];
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
-
-request(apiUrl, (error, response, body) => {
-  if (!error && response.statusCode === 200) {
-    const film = JSON.parse(body);
-    const characterUrls = film.characters;
-    
-    characterUrls.forEach(characterUrl => {
-      request(characterUrl, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-          const character = JSON.parse(body);
-          console.log(character.name);
-        } else {
-          console.error('Error retrieving character information:', error);
-        }
+request(url, async function (error, response, body) {
+  if (!error) {
+    const json = JSON.parse(body);
+    const endpoints = json.characters;
+    for (const endpoint of endpoints) {
+      await new Promise(function (resolve, reject) {
+        request(endpoint, function (error, response, body) {
+          if (!error) {
+            console.log(JSON.parse(body).name);
+            resolve();
+          }
+        });
       });
-    });
-  } else {
-    console.error('Error retrieving film information:', error);
+    }
   }
 });
+
